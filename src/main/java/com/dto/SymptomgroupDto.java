@@ -1,6 +1,6 @@
 package com.dto;
 
-public class symptomgroupDto {
+public class SymptomgroupDto {
 
 	String name;
 
