@@ -32,9 +32,9 @@ public class Herb {
 		Gson gson = new Gson();
 		MongoCollection<Document> collection = mongo.db.getCollection("Herb");
 		ModelMapper Mapper = new ModelMapper();
-		HerbDao solutionDao = Mapper.map(herbDto, HerbDao.class);
+		HerbDao herbDao = Mapper.map(herbDto, HerbDao.class);
 		
-		String json = gson.toJson(solutionDao);
+		String json = gson.toJson(herbDao);
 		Document document = Document.parse(json);
 		
 		try {
