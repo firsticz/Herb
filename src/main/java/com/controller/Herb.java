@@ -12,8 +12,8 @@ import org.bson.Document;
 import org.modelmapper.ModelMapper;
 
 import com.connect.mongo.Connect;
-import com.dao.SolutionDao;
-import com.dto.SolutionDto;
+import com.dao.HerbDao;
+import com.dto.HerbDto;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.mongodb.BasicDBObject;
@@ -26,13 +26,13 @@ public class Herb {
 	@POST
 	@Path("/insert")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response insert(SolutionDto solutionDto) {
+	public Response insert(HerbDto herbDto) {
 		Connect mongo = new Connect();
 		JsonObject message = new JsonObject();
 		Gson gson = new Gson();
-		MongoCollection<Document> collection = mongo.db.getCollection("solution");
+		MongoCollection<Document> collection = mongo.db.getCollection("Herb");
 		ModelMapper Mapper = new ModelMapper();
-		SolutionDao solutionDao = Mapper.map(solutionDto, SolutionDao.class);
+		HerbDao solutionDao = Mapper.map(herbDto, HerbDao.class);
 		
 		String json = gson.toJson(solutionDao);
 		Document document = Document.parse(json);
@@ -50,24 +50,25 @@ public class Herb {
 	@POST
 	@Path("/update")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response update(SolutionDto solutionDto) {
+	public Response update(HerbDto herbDto) {
 		Connect mongo = new Connect();
 		JsonObject message = new JsonObject();
 		Gson gson = new Gson();
-		MongoCollection<Document> collection = mongo.db.getCollection("solution");
+		MongoCollection<Document> collection = mongo.db.getCollection("Herb");
 		
-		SolutionDao solutionDao = new SolutionDao();
-		solutionDao.setSeed(solutionDto.getSeed());
-		solutionDao.setWater(solutionDto.getWater());
+		HerbDao herbDao = new HerbDao();
+		herbDao.setHerbname(herbDto.getHerbname());
+		herbDao.setProperties(herbDto.getProperties());
+		herbDao.setWarning(herbDto.getWarning());
 		
-		String json = gson.toJson(solutionDao);
+		String json = gson.toJson(herbDao);
 		Document document = Document.parse(json);
 		
 		BasicDBObject setQuery = new BasicDBObject();
         setQuery.put("$set", document);
 		
 		BasicDBObject searchQuery = new BasicDBObject();
-		searchQuery.put("_id", solutionDto.getId());
+		searchQuery.put("_id", herbDto.getId());
 		
 		try {
 			collection.updateOne(searchQuery, setQuery);
@@ -82,14 +83,14 @@ public class Herb {
 	@DELETE
 	@Path("/delete")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response delete(SolutionDto solutionDto) {
+	public Response delete(HerbDto herbDto) {
 		Connect mongo = new Connect();
 		JsonObject message = new JsonObject();
 		Gson gson = new Gson();
-		MongoCollection<Document> collection = mongo.db.getCollection("solution");
+		MongoCollection<Document> collection = mongo.db.getCollection("Herb");
 		
 		try {
-			collection.deleteOne(Filters.eq("_id", solutionDto.getId())); 
+			collection.deleteOne(Filters.eq("_id",herbDto.getId())); 
 			message.addProperty("message", true);
 		}catch (Exception e) {
 			message.addProperty("message", false);
