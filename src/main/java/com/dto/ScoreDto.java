@@ -23,4 +23,5 @@ public class ScoreDto {
 		this.vote = vote;
 	}
 	
+
 }

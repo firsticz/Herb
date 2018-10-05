@@ -1,16 +1,13 @@
-package com.connect.mongo;
-
-import com.mongodb.MongoClient;
+package com.connect;
+ import com.mongodb.MongoClient;
 import com.mongodb.client.MongoDatabase;
-
-public class Connect {
+ public class Connect {
 	
 	public MongoDatabase db;
 	MongoClient mongo;
-
-	public Connect() {
+ 	public Connect() {
 		this.mongo = new MongoClient("localhost", 27017);
-		this.db = this.mongo.getDatabase("Member");
+		this.db = this.mongo.getDatabase("Mhunprai");
 	}
 	
 	public void close() {

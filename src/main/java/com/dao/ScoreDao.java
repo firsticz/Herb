@@ -23,4 +23,5 @@ public class ScoreDao {
 		this.vote = vote;
 	}
 	
+
 }
