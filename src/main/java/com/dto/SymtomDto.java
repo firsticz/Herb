@@ -3,9 +3,9 @@ package com.dto;
 public class SymtomDto {
 	
 	String id;
-	String idSymtomGroup;
+	SymtomGroupDto idSymtomGroup;
 	String SymtomName;
-	String[] idDrigFormula;
+	DrugFormulaDto[] idDrugFormula;
 	
 	public String getId() {
 		return id;
@@ -13,10 +13,10 @@ public class SymtomDto {
 	public void setId(String id) {
 		this.id = id;
 	}
-	public String getIdSymtomGroup() {
+	public SymtomGroupDto getIdSymtomGroup() {
 		return idSymtomGroup;
 	}
-	public void setIdSymtomGroup(String idSymtomGroup) {
+	public void setIdSymtomGroup(SymtomGroupDto idSymtomGroup) {
 		this.idSymtomGroup = idSymtomGroup;
 	}
 	public String getSymtomName() {
@@ -25,12 +25,11 @@ public class SymtomDto {
 	public void setSymtomName(String symtomName) {
 		SymtomName = symtomName;
 	}
-	public String[] getIdDrigFormula() {
-		return idDrigFormula;
+	public DrugFormulaDto[] getIdDrugFormula() {
+		return idDrugFormula;
 	}
-	public void setIdDrigFormula(String[] idDrigFormula) {
-		this.idDrigFormula = idDrigFormula;
+	public void setIdDrugFormula(DrugFormulaDto[] idDrugFormula) {
+		this.idDrugFormula = idDrugFormula;
 	}
-	
 	
 }

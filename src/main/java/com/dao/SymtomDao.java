@@ -1,15 +1,15 @@
 package com.dao;
 
 public class SymtomDao {
-
-	String idSymtomGroup;
-	String SymtomName;
-	String[] idDrigFormula;
 	
-	public String getIdSymtomGroup() {
+	SymtomGroupDao idSymtomGroup;
+	String SymtomName;
+	DrugFormulaDao[] idDrugFormula;
+	
+	public SymtomGroupDao getIdSymtomGroup() {
 		return idSymtomGroup;
 	}
-	public void setIdSymtomGroup(String idSymtomGroup) {
+	public void setIdSymtomGroup(SymtomGroupDao idSymtomGroup) {
 		this.idSymtomGroup = idSymtomGroup;
 	}
 	public String getSymtomName() {
@@ -18,11 +18,11 @@ public class SymtomDao {
 	public void setSymtomName(String symtomName) {
 		SymtomName = symtomName;
 	}
-	public String[] getIdDrigFormula() {
-		return idDrigFormula;
+	public DrugFormulaDao[] getIdDrugFormula() {
+		return idDrugFormula;
 	}
-	public void setIdDrigFormula(String[] idDrigFormula) {
-		this.idDrigFormula = idDrigFormula;
+	public void setIdDrugFormula(DrugFormulaDao[] idDrugFormula) {
+		this.idDrugFormula = idDrugFormula;
 	}
 	
 }
