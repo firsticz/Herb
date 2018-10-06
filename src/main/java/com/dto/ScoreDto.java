@@ -1,6 +1,7 @@
 package com.dto;
 
 public class ScoreDto {
+	String Id;
 	String drugformula;
 	double score;
 	int vote;
@@ -21,6 +22,12 @@ public class ScoreDto {
 	}
 	public void setVote(int vote) {
 		this.vote = vote;
+	}
+	public String getId() {
+		return Id;
+	}
+	public void setId(String id) {
+		Id = id;
 	}
 	
 
