@@ -84,22 +84,26 @@ public class Score {
 	@POST
 	@Path("/update")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response update(ScoreDto updateDto) {
+	public Response update(ScoreDto scoreDto) {
 		Connect mongo = new Connect();
 		JsonObject message = new JsonObject();
 		Gson gson = new Gson();
 		MongoCollection<Document> collection = mongo.db.getCollection("score");
-		ModelMapper Mapper = new ModelMapper();
-		ScoreDao updateDao = Mapper.map(updateDto, ScoreDao.class);
+//		ModelMapper Mapper = new ModelMapper();
+//		ScoreDao updateDao = Mapper.map(scoreDto, ScoreDao.class);
+		ScoreDao scoreDao = new ScoreDao();
+		scoreDao.setDrugformula(scoreDto.getDrugformula());
+		scoreDao.setScore(scoreDto.getScore());
+		scoreDao.setVote(scoreDto.getVote());
 		
-		String json = gson.toJson(updateDao);
+		String json = gson.toJson(scoreDao);
 		Document document = Document.parse(json);
 		
 		BasicDBObject setQuery = new BasicDBObject();
         setQuery.put("$set", document);
 		
 		BasicDBObject searchQuery = new BasicDBObject();
-		searchQuery.put("_id", updateDto.getId());
+		searchQuery.put("_id", scoreDto.getId());
 		
 		try {
 			collection.updateOne(searchQuery, setQuery);

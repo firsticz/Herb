@@ -1,7 +1,8 @@
 package com.dto;
 
+import org.bson.types.ObjectId;
 public class ScoreDto {
-	String Id;
+	String id;
 	String drugformula;
 	double score;
 	int vote;
@@ -23,12 +24,13 @@ public class ScoreDto {
 	public void setVote(int vote) {
 		this.vote = vote;
 	}
-	public String getId() {
-		return Id;
+	public ObjectId getId() {
+		return new ObjectId(id);
 	}
 	public void setId(String id) {
-		Id = id;
+		this.id = id;
 	}
+	
 	
 
 }
