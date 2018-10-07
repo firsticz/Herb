@@ -102,7 +102,7 @@ public class Herb {
 	@POST
 	@Path("/search")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response search(HerbDto searchDto) {
+	public Response search(HerbDto searchHerbDto) {
 		Connect mongo = new Connect();
 		JsonObject message = new JsonObject();
 		Gson gson = new Gson();
@@ -113,8 +113,8 @@ public class Herb {
 		BasicDBObject query = new BasicDBObject();
 			
 		List<BasicDBObject> obj = new ArrayList<BasicDBObject>();
-		obj.add(new BasicDBObject("water", searchDto.getWarning()));
-		obj.add(new BasicDBObject("seed", searchDto.getId()));
+		obj.add(new BasicDBObject("water", searchHerbDto.getWarning()));
+		obj.add(new BasicDBObject("seed", searchHerbDto.getId()));
 		query.put("$and", obj);
 				
 		HerbDto[] value = null;
