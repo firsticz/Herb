@@ -89,12 +89,12 @@ public class Score {
 		JsonObject message = new JsonObject();
 		Gson gson = new Gson();
 		MongoCollection<Document> collection = mongo.db.getCollection("score");
-//		ModelMapper Mapper = new ModelMapper();
-//		ScoreDao updateDao = Mapper.map(scoreDto, ScoreDao.class);
-		ScoreDao scoreDao = new ScoreDao();
-		scoreDao.setDrugformula(scoreDto.getDrugformula());
-		scoreDao.setScore(scoreDto.getScore());
-		scoreDao.setVote(scoreDto.getVote());
+		ModelMapper Mapper = new ModelMapper();
+		ScoreDao scoreDao = Mapper.map(scoreDto, ScoreDao.class);
+//		ScoreDao scoreDao = new ScoreDao();
+//		scoreDao.setDrugformula(scoreDto.getDrugformula());
+//		scoreDao.setScore(scoreDto.getScore());
+//		scoreDao.setVote(scoreDto.getVote());
 		
 		String json = gson.toJson(scoreDao);
 		Document document = Document.parse(json);
