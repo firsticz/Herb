@@ -117,8 +117,8 @@ public class DrugFormula {
 		BasicDBObject query = new BasicDBObject();
 			
 		List<BasicDBObject> obj = new ArrayList<BasicDBObject>();
-		obj.add(new BasicDBObject("water", searchDrugFormuDto.getWarning()));
-		obj.add(new BasicDBObject("seed", searchDrugFormuDto.getId()));
+		obj.add(new BasicDBObject("message", searchDrugFormuDto.getWarning()));
+		obj.add(new BasicDBObject("message", searchDrugFormuDto.getId()));
 		query.put("$and", obj);
 				
 		DrugFormulaDto[] value = null;

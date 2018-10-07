@@ -113,8 +113,8 @@ public class Herb {
 		BasicDBObject query = new BasicDBObject();
 			
 		List<BasicDBObject> obj = new ArrayList<BasicDBObject>();
-		obj.add(new BasicDBObject("water", searchHerbDto.getWarning()));
-		obj.add(new BasicDBObject("seed", searchHerbDto.getId()));
+		obj.add(new BasicDBObject("message", searchHerbDto.getWarning()));
+		obj.add(new BasicDBObject("message", searchHerbDto.getId()));
 		query.put("$and", obj);
 				
 		HerbDto[] value = null;
