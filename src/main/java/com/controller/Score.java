@@ -1,5 +1,8 @@
 package com.controller;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.POST;
@@ -148,6 +151,44 @@ public class Score {
 		try {
 			FindIterable<Document> data = collection.find(searchQuery);
 			value = Mapper.map(data.first(), ScoreDto.class);
+			message.addProperty("message", true);
+		}catch (Exception e) {
+			message.addProperty("message", false);
+		}finally {
+			message.add("data", gson.toJsonTree(value));
+		}
+		
+		return Response.ok(gson.toJson(message), MediaType.APPLICATION_JSON).build();
+	}
+	
+	@POST
+	@Path("/search")
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Response search(ScoreDto scoreDto) {
+		Connect mongo = new Connect();
+		JsonObject message = new JsonObject();
+		Gson gson = new Gson();
+		MongoCollection<Document> collection = mongo.db.getCollection("score");
+		ModelMapper Mapper = new ModelMapper();
+		
+		// find when water = 'value' and seed = 'value'
+		BasicDBObject query = new BasicDBObject();
+			
+		List<BasicDBObject> obj = new ArrayList<BasicDBObject>();
+		obj.add(new BasicDBObject("water", scoreDto.getDrugformula()));
+		obj.add(new BasicDBObject("seed", scoreDto.getScore()));
+		query.put("$and", obj);
+				
+		ScoreDto[] value = null;
+		
+		try {
+			FindIterable<Document> data = collection.find(query);
+			int size = Iterables.size(data);
+			value = new ScoreDto[size];
+			int key = 0;
+			for (Document document : data) {
+				value[key++] = Mapper.map(document, ScoreDto.class);
+			}
 			message.addProperty("message", true);
 		}catch (Exception e) {
 			message.addProperty("message", false);
