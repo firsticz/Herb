@@ -5,7 +5,7 @@ public class SymtomDto {
 	String id;
 	SymtomGroupDto idSymtomGroup;
 	String SymtomName;
-	DrugFormulaDto[] idDrugFormula;
+	String[]  idDrugFormula;
 	
 	public String getId() {
 		return id;
@@ -25,11 +25,11 @@ public class SymtomDto {
 	public void setSymtomName(String symtomName) {
 		SymtomName = symtomName;
 	}
-	public DrugFormulaDto[] getIdDrugFormula() {
+	public String[] getIdDrugFormula() {
 		return idDrugFormula;
 	}
-	public void setIdDrugFormula(DrugFormulaDto[] idDrugFormula) {
+	public void setIdDrugFormula(String[] idDrugFormula) {
 		this.idDrugFormula = idDrugFormula;
 	}
-	
+
 }
