@@ -173,8 +173,8 @@ public class Score {
 		BasicDBObject query = new BasicDBObject();
 			
 		List<BasicDBObject> obj = new ArrayList<BasicDBObject>();
-		obj.add(new BasicDBObject("water", scoreDto.getDrugformula()));
-		obj.add(new BasicDBObject("seed", scoreDto.getScore()));
+		obj.add(new BasicDBObject("drugformula", scoreDto.getDrugformula()));
+		obj.add(new BasicDBObject("score", scoreDto.getScore()));
 		query.put("$and", obj);
 				
 		ScoreDto[] value = null;
