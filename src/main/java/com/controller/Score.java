@@ -91,10 +91,6 @@ public class Score {
 		MongoCollection<Document> collection = mongo.db.getCollection("score");
 		ModelMapper Mapper = new ModelMapper();
 		ScoreDao scoreDao = Mapper.map(scoreDto, ScoreDao.class);
-//		ScoreDao scoreDao = new ScoreDao();
-//		scoreDao.setDrugformula(scoreDto.getDrugformula());
-//		scoreDao.setScore(scoreDto.getScore());
-//		scoreDao.setVote(scoreDto.getVote());
 		
 		String json = gson.toJson(scoreDao);
 		Document document = Document.parse(json);
@@ -118,14 +114,14 @@ public class Score {
 	@DELETE
 	@Path("/delete")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response delete(ScoreDto deleteDto) {
+	public Response delete(ScoreDto scoreDto) {
 		Connect mongo = new Connect();
 		JsonObject message = new JsonObject();
 		Gson gson = new Gson();
 		MongoCollection<Document> collection = mongo.db.getCollection("score");
 		
 		try {
-			collection.deleteOne(Filters.eq("_id", deleteDto.getId())); 
+			collection.deleteOne(Filters.eq("_id", scoreDto.getId())); 
 			message.addProperty("message", true);
 		}catch (Exception e) {
 			message.addProperty("message", false);
