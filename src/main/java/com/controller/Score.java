@@ -15,8 +15,6 @@ import org.modelmapper.ModelMapper;
 
 import com.connect.Connect;
 import com.dao.ScoreDao;
-import com.dao.UpdateDao;
-import com.dto.RegisterDto;
 import com.dto.ScoreDto;
 import com.google.common.collect.Iterables;
 import com.google.gson.Gson;

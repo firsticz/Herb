@@ -1,11 +1,14 @@
 package com.dto;
- public class HerbDto {
+
+import org.bson.types.ObjectId;
+
+public class HerbDto {
 	String id;
 	String herbname;
 	String[] properties;
 	String[] warning;
-	public String getId() {
-		return id;
+	public ObjectId getId() {
+		return new ObjectId(id);
 	}
 	public void setId(String id) {
 		this.id = id;
