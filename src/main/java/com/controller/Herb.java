@@ -1,5 +1,7 @@
 package com.controller;
- import javax.ws.rs.Consumes;
+ import java.util.ArrayList;
+ import java.util.List;
+import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -10,11 +12,14 @@ import org.modelmapper.ModelMapper;
  import com.connect.Connect;
 import com.dao.HerbDao;
 import com.dto.HerbDto;
+import com.google.common.collect.Iterables;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.mongodb.BasicDBObject;
+import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.model.Filters;
+
  @Path("/herb")
 public class Herb {
 	
@@ -89,6 +94,44 @@ public class Herb {
 			message.addProperty("message", true);
 		}catch (Exception e) {
 			message.addProperty("message", false);
+		}
+		
+		return Response.ok(gson.toJson(message), MediaType.APPLICATION_JSON).build();
+	}
+	
+	@POST
+	@Path("/search")
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Response search(HerbDto searchDto) {
+		Connect mongo = new Connect();
+		JsonObject message = new JsonObject();
+		Gson gson = new Gson();
+		MongoCollection<Document> collection = mongo.db.getCollection("solution");
+		ModelMapper Mapper = new ModelMapper();
+		
+		// find when water = 'value' and seed = 'value'
+		BasicDBObject query = new BasicDBObject();
+			
+		List<BasicDBObject> obj = new ArrayList<BasicDBObject>();
+		obj.add(new BasicDBObject("water", searchDto.getWarning()));
+		obj.add(new BasicDBObject("seed", searchDto.getId()));
+		query.put("$and", obj);
+				
+		HerbDto[] value = null;
+		
+		try {
+			FindIterable<Document> data = collection.find(query);
+			int size = Iterables.size(data);
+			value = new HerbDto[size];
+			int key = 0;
+			for (Document document : data) {
+				value[key++] = Mapper.map(document, HerbDto.class);
+			}
+			message.addProperty("message", true);
+		}catch (Exception e) {
+			message.addProperty("message", false);
+		}finally {
+			message.add("data", gson.toJsonTree(value));
 		}
 		
 		return Response.ok(gson.toJson(message), MediaType.APPLICATION_JSON).build();
