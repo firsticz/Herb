@@ -4,7 +4,7 @@ public class SymtomDao {
 	
 	SymtomGroupDao idSymtomGroup;
 	String SymtomName;
-	DrugFormulaDao[] idDrugFormula;
+	String[] idDrugFormula;
 	
 	public SymtomGroupDao getIdSymtomGroup() {
 		return idSymtomGroup;
@@ -18,11 +18,16 @@ public class SymtomDao {
 	public void setSymtomName(String symtomName) {
 		SymtomName = symtomName;
 	}
-	public DrugFormulaDao[] getIdDrugFormula() {
+	public String[] getIdDrugFormula() {
 		return idDrugFormula;
 	}
-	public void setIdDrugFormula(DrugFormulaDao[] idDrugFormula) {
+	public void setIdDrugFormula(String[] idDrugFormula) {
 		this.idDrugFormula = idDrugFormula;
 	}
+	
+
+	
+	
+	
 	
 }
