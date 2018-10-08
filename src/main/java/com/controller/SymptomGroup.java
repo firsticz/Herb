@@ -11,8 +11,7 @@ import org.bson.Document;
 import org.modelmapper.ModelMapper;
 import com.connect.Connect;
 import com.dao.SymptomGroupDao;
-import com.dao.UpdateDao;
-import com.dto.RegisterDto;
+import com.dto.ScoreDto;
 import com.dto.SymptomGroupDto;
 import com.google.common.collect.Iterables;
 import com.google.gson.Gson;
@@ -23,7 +22,7 @@ import com.mongodb.client.MongoCollection;
 import com.mongodb.client.model.Filters;
 
 import javax.ws.rs.core.Response;
-@Path("/symtomGroup")
+@Path("/symtomgroup")
 public class SymptomGroup {
 	@POST
 	@Path("/insert")
@@ -55,13 +54,13 @@ public class SymptomGroup {
 	@POST
 	@Path("/update")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response update(SymptomGroupDto updateDto) {
+	public Response update(SymptomGroupDto SymtomGroupdto) {
 		Connect mongo = new Connect();
 		JsonObject message = new JsonObject();
 		Gson gson = new Gson();
 		MongoCollection<Document> collection = mongo.db.getCollection("systomGroup");
 		ModelMapper Mapper = new ModelMapper();
-		SymptomGroupDao updateDao = Mapper.map(updateDto, SymptomGroupDao.class);
+		SymptomGroupDao updateDao = Mapper.map(SymtomGroupdto, SymptomGroupDao.class);
 		
 		String json = gson.toJson(updateDao);
 		Document document = Document.parse(json);
@@ -70,7 +69,7 @@ public class SymptomGroup {
         setQuery.put("$set", document);
 		
 		BasicDBObject searchQuery = new BasicDBObject();
-		searchQuery.put("_id", updateDto.getId());
+		searchQuery.put("_id", SymtomGroupdto.getId());
 		
 		try {
 			collection.updateOne(searchQuery, setQuery);
@@ -104,19 +103,19 @@ public class SymptomGroup {
 	@POST
 	@Path("/search")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response search(SymptomGroupDto searchSymtomGroupDto) {
+	public Response search(SymptomGroupDto SymtomGroupdto) {
 		Connect mongo = new Connect();
 		JsonObject message = new JsonObject();
 		Gson gson = new Gson();
-		MongoCollection<Document> collection = mongo.db.getCollection("solution");
+		MongoCollection<Document> collection = mongo.db.getCollection("systomGroup");
 		ModelMapper Mapper = new ModelMapper();
 		
 		// find when water = 'value' and seed = 'value'
 		BasicDBObject query = new BasicDBObject();
 			
 		List<BasicDBObject> obj = new ArrayList<BasicDBObject>();
-		obj.add(new BasicDBObject("message", SymptomGroupDto.getId()));
-		obj.add(new BasicDBObject("message", SymptomGroupDto.getSymtomGroupName()));
+		obj.add(new BasicDBObject("message", SymtomGroupdto.getId()));
+		obj.add(new BasicDBObject("message", SymtomGroupdto.getSymtomGroupName()));
 		query.put("$and", obj);
 				
 		SymptomGroupDto[] value = null;
@@ -129,6 +128,64 @@ public class SymptomGroup {
 			for (Document document : data) {
 				value[key++] = Mapper.map(document, SymptomGroupDto.class);
 			}
+			message.addProperty("message", true);
+		}catch (Exception e) {
+			message.addProperty("message", false);
+		}finally {
+			message.add("data", gson.toJsonTree(value));
+		}
+		
+		return Response.ok(gson.toJson(message), MediaType.APPLICATION_JSON).build();
+	}
+	
+	@POST
+	@Path("/findAll")
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Response findAll() {
+		Connect mongo = new Connect();
+		JsonObject message = new JsonObject();
+		Gson gson = new Gson();
+		MongoCollection<Document> collection = mongo.db.getCollection("systomGroup");
+		ModelMapper Mapper = new ModelMapper();
+		
+		SymptomGroupDto[] value = null;
+		
+		try {
+			FindIterable<Document> data = collection.find();
+			int size = Iterables.size(data);
+			value = new SymptomGroupDto[size];
+			int key = 0;
+			for (Document document : data) {
+				value[key++] = Mapper.map(document, SymptomGroupDto.class);
+			}
+			message.addProperty("message", true);
+		}catch (Exception e) {
+			message.addProperty("message", false);
+		}finally {
+			message.add("data", gson.toJsonTree(value));
+		}
+		
+		return Response.ok(gson.toJson(message), MediaType.APPLICATION_JSON).build();
+	}
+	
+	@POST
+	@Path("/findOne")
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Response findOne(SymptomGroupDto SymtomGroupdto) {
+		Connect mongo = new Connect();
+		JsonObject message = new JsonObject();
+		Gson gson = new Gson();
+		MongoCollection<Document> collection = mongo.db.getCollection("score");
+		ModelMapper Mapper = new ModelMapper();
+		
+		BasicDBObject searchQuery = new BasicDBObject();
+		searchQuery.put("_id", SymtomGroupdto.getId());
+		
+		SymptomGroupDto value = new SymptomGroupDto();
+		
+		try {
+			FindIterable<Document> data = collection.find(searchQuery);
+			value = Mapper.map(data.first(), SymptomGroupDto.class);
 			message.addProperty("message", true);
 		}catch (Exception e) {
 			message.addProperty("message", false);
