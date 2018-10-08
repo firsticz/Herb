@@ -1,5 +1,7 @@
 package com.dto;
 
+import org.bson.types.ObjectId;
+
 public class SymtomDto {
 	
 	String id;
@@ -7,8 +9,8 @@ public class SymtomDto {
 	String SymtomName;
 	String[]  idDrugFormula;
 	
-	public String getId() {
-		return id;
+	public ObjectId getId() {
+		return new ObjectId(id);
 	}
 	public void setId(String id) {
 		this.id = id;
