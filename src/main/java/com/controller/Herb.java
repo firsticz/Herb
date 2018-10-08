@@ -1,5 +1,8 @@
 package com.controller;
- import javax.ws.rs.Consumes;
+ import java.util.ArrayList;
+import java.util.List;
+
+import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -10,9 +13,12 @@ import org.modelmapper.ModelMapper;
  import com.connect.Connect;
 import com.dao.HerbDao;
 import com.dto.HerbDto;
+import com.dto.ScoreDto;
+import com.google.common.collect.Iterables;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.mongodb.BasicDBObject;
+import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.model.Filters;
  @Path("/herb")
@@ -89,6 +95,103 @@ public class Herb {
 			message.addProperty("message", true);
 		}catch (Exception e) {
 			message.addProperty("message", false);
+		}
+		
+		return Response.ok(gson.toJson(message), MediaType.APPLICATION_JSON).build();
+	}
+	
+	@POST
+	@Path("/findAll")
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Response findAll() {
+		Connect mongo = new Connect();
+		JsonObject message = new JsonObject();
+		Gson gson = new Gson();
+		MongoCollection<Document> collection = mongo.db.getCollection("herb");
+		ModelMapper Mapper = new ModelMapper();
+		
+		HerbDto[] value = null;
+		
+		try {
+			FindIterable<Document> data = collection.find();
+			int size = Iterables.size(data);
+			value = new HerbDto[size];
+			int key = 0;
+			for (Document document : data) {
+				value[key++] = Mapper.map(document, HerbDto.class);
+			}
+			message.addProperty("message", true);
+		}catch (Exception e) {
+			message.addProperty("message", false);
+		}finally {
+			message.add("data", gson.toJsonTree(value));
+		}
+		
+		return Response.ok(gson.toJson(message), MediaType.APPLICATION_JSON).build();
+	}
+	
+	@POST
+	@Path("/findOne")
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Response findOne(HerbDto herbDto) {
+		Connect mongo = new Connect();
+		JsonObject message = new JsonObject();
+		Gson gson = new Gson();
+		MongoCollection<Document> collection = mongo.db.getCollection("herb");
+		ModelMapper Mapper = new ModelMapper();
+		
+		BasicDBObject searchQuery = new BasicDBObject();
+		searchQuery.put("_id", herbDto.getId());
+		
+		HerbDto value = new HerbDto();
+		
+		try {
+			FindIterable<Document> data = collection.find(searchQuery);
+			value = Mapper.map(data.first(), HerbDto.class);
+			message.addProperty("message", true);
+		}catch (Exception e) {
+			message.addProperty("message", false);
+		}finally {
+			message.add("data", gson.toJsonTree(value));
+		}
+		
+		return Response.ok(gson.toJson(message), MediaType.APPLICATION_JSON).build();
+	}
+	
+	@POST
+	@Path("/search")
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Response search(HerbDto herbDto) {
+		Connect mongo = new Connect();
+		JsonObject message = new JsonObject();
+		Gson gson = new Gson();
+		MongoCollection<Document> collection = mongo.db.getCollection("herb");
+		ModelMapper Mapper = new ModelMapper();
+		
+		// find when water = 'value' and seed = 'value'
+		BasicDBObject query = new BasicDBObject();
+			
+		List<BasicDBObject> obj = new ArrayList<BasicDBObject>();
+		//get value for search
+		obj.add(new BasicDBObject("herbname", herbDto.getHerbname()));
+		obj.add(new BasicDBObject("seed", herbDto.getProperties()));
+		query.put("$and", obj);
+				
+		ScoreDto[] value = null;
+		
+		try {
+			FindIterable<Document> data = collection.find(query);
+			int size = Iterables.size(data);
+			value = new ScoreDto[size];
+			int key = 0;
+			for (Document document : data) {
+				value[key++] = Mapper.map(document, ScoreDto.class);
+			}
+			message.addProperty("message", true);
+		}catch (Exception e) {
+			message.addProperty("message", false);
+		}finally {
+			message.add("data", gson.toJsonTree(value));
 		}
 		
 		return Response.ok(gson.toJson(message), MediaType.APPLICATION_JSON).build();
