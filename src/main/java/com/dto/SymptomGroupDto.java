@@ -1,6 +1,6 @@
 package com.dto;
 
-public class SymtomGroupDto {
+public class SymptomGroupDto {
 	
 	static String id;
 	static String SymtomGroupName;

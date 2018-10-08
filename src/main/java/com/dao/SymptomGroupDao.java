@@ -1,6 +1,6 @@
 package com.dao;
 
-public class SymtomGroupDao {
+public class SymptomGroupDao {
 	
 	String SymtomGroupName;
 

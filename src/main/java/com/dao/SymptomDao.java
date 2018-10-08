@@ -1,15 +1,15 @@
 package com.dao;
 
-public class SymtomDao {
+public class SymptomDao {
 	
-	SymtomGroupDao idSymtomGroup;
+	SymptomGroupDao idSymtomGroup;
 	String SymtomName;
 	String[] idDrugFormula;
 	
-	public SymtomGroupDao getIdSymtomGroup() {
+	public SymptomGroupDao getIdSymtomGroup() {
 		return idSymtomGroup;
 	}
-	public void setIdSymtomGroup(SymtomGroupDao idSymtomGroup) {
+	public void setIdSymtomGroup(SymptomGroupDao idSymtomGroup) {
 		this.idSymtomGroup = idSymtomGroup;
 	}
 	public String getSymtomName() {

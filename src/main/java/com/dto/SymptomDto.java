@@ -2,10 +2,10 @@ package com.dto;
 
 import org.bson.types.ObjectId;
 
-public class SymtomDto {
+public class SymptomDto {
 	
 	String id;
-	SymtomGroupDto idSymtomGroup;
+	SymptomGroupDto idSymtomGroup;
 	String SymtomName;
 	String[]  idDrugFormula;
 	
@@ -15,10 +15,10 @@ public class SymtomDto {
 	public void setId(String id) {
 		this.id = id;
 	}
-	public SymtomGroupDto getIdSymtomGroup() {
+	public SymptomGroupDto getIdSymtomGroup() {
 		return idSymtomGroup;
 	}
-	public void setIdSymtomGroup(SymtomGroupDto idSymtomGroup) {
+	public void setIdSymtomGroup(SymptomGroupDto idSymtomGroup) {
 		this.idSymtomGroup = idSymtomGroup;
 	}
 	public String getSymtomName() {
