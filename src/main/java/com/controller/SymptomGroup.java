@@ -11,7 +11,6 @@ import org.bson.Document;
 import org.modelmapper.ModelMapper;
 import com.connect.Connect;
 import com.dao.SymptomGroupDao;
-import com.dto.ScoreDto;
 import com.dto.SymptomGroupDto;
 import com.google.common.collect.Iterables;
 import com.google.gson.Gson;
