@@ -16,6 +16,7 @@ import org.modelmapper.ModelMapper;
 import com.connect.Connect;
 import com.dao.DrugFormulaDao;
 import com.dto.DrugFormulaDto;
+import com.dto.ScoreDto;
 import com.google.common.collect.Iterables;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
@@ -108,7 +109,7 @@ public class DrugFormula {
 		Connect mongo = new Connect();
 		JsonObject message = new JsonObject();
 		Gson gson = new Gson();
-		MongoCollection<Document> collection = mongo.db.getCollection("solution");
+		MongoCollection<Document> collection = mongo.db.getCollection("drugformula");
 		ModelMapper Mapper = new ModelMapper();
 		
 		// find when water = 'value' and seed = 'value'
@@ -129,6 +130,64 @@ public class DrugFormula {
 			for (Document document : data) {
 				value[key++] = Mapper.map(document, DrugFormulaDto.class);
 			}
+			message.addProperty("message", true);
+		}catch (Exception e) {
+			message.addProperty("message", false);
+		}finally {
+			message.add("data", gson.toJsonTree(value));
+		}
+		
+		return Response.ok(gson.toJson(message), MediaType.APPLICATION_JSON).build();
+	}
+	
+	@POST
+	@Path("/findAll")
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Response findAll() {
+		Connect mongo = new Connect();
+		JsonObject message = new JsonObject();
+		Gson gson = new Gson();
+		MongoCollection<Document> collection = mongo.db.getCollection("drugformula");
+		ModelMapper Mapper = new ModelMapper();
+		
+		DrugFormulaDto[] value = null;
+		
+		try {
+			FindIterable<Document> data = collection.find();
+			int size = Iterables.size(data);
+			value = new DrugFormulaDto[size];
+			int key = 0;
+			for (Document document : data) {
+				value[key++] = Mapper.map(document, DrugFormulaDto.class);
+			}
+			message.addProperty("message", true);
+		}catch (Exception e) {
+			message.addProperty("message", false);
+		}finally {
+			message.add("data", gson.toJsonTree(value));
+		}
+		
+		return Response.ok(gson.toJson(message), MediaType.APPLICATION_JSON).build();
+	}
+	
+	@POST
+	@Path("/findOne")
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Response findOne(DrugFormulaDto drugformulaDto) {
+		Connect mongo = new Connect();
+		JsonObject message = new JsonObject();
+		Gson gson = new Gson();
+		MongoCollection<Document> collection = mongo.db.getCollection("drugformula");
+		ModelMapper Mapper = new ModelMapper();
+		
+		BasicDBObject searchQuery = new BasicDBObject();
+		searchQuery.put("_id", drugformulaDto.getId());
+		
+		DrugFormulaDto value = new DrugFormulaDto();
+		
+		try {
+			FindIterable<Document> data = collection.find(searchQuery);
+			value = Mapper.map(data.first(), DrugFormulaDto.class);
 			message.addProperty("message", true);
 		}catch (Exception e) {
 			message.addProperty("message", false);
