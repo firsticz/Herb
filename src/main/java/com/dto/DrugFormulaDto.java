@@ -1,5 +1,7 @@
 package com.dto;
 
+import org.bson.types.ObjectId;
+
 public class DrugFormulaDto {
 	
 	String id;
@@ -10,8 +12,8 @@ public class DrugFormulaDto {
 	String[] warning;
 	String[] sideEffect;
 	
-	public String getId() {
-		return id;
+	public ObjectId getId() {
+		return new ObjectId(id);
 	}
 	public void setId(String id) {
 		this.id = id;

@@ -15,9 +15,7 @@ import org.modelmapper.ModelMapper;
 
 import com.connect.Connect;
 import com.dao.DrugFormulaDao;
-import com.dao.UpdateDao;
 import com.dto.DrugFormulaDto;
-import com.dto.RegisterDto;
 import com.google.common.collect.Iterables;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
@@ -31,7 +29,7 @@ public class DrugFormula {
 	@POST
 	@Path("/insert")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response insert(DrugFormulaDto drugformula) {
+	public Response insert(DrugFormulaDto drugformulaDto) {
 		
 		Connect mongo = new Connect();
 		MongoCollection<Document> collection = mongo.db.getCollection("drugformula");
@@ -40,9 +38,9 @@ public class DrugFormula {
 		Gson gson = new Gson();
 		
 		ModelMapper Mapper = new ModelMapper();
-		DrugFormulaDao groupDao = Mapper.map(drugformula, DrugFormulaDao.class);
+		DrugFormulaDao drugformulaDao = Mapper.map(drugformulaDto, DrugFormulaDao.class);
 		
-		String json = gson.toJson(groupDao);
+		String json = gson.toJson(drugformulaDao);
 		Document document = Document.parse(json);
 		
 		try {
@@ -57,22 +55,22 @@ public class DrugFormula {
 	@POST
 	@Path("/update")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response update(DrugFormulaDto updateDto) {
+	public Response update(DrugFormulaDto drugformulaDto) {
 		Connect mongo = new Connect();
 		JsonObject message = new JsonObject();
 		Gson gson = new Gson();
 		MongoCollection<Document> collection = mongo.db.getCollection("drugformula");
 		ModelMapper Mapper = new ModelMapper();
-		DrugFormulaDao updateDao = Mapper.map(updateDto, DrugFormulaDao.class);
+		DrugFormulaDao drugformulaDao = Mapper.map(drugformulaDto, DrugFormulaDao.class);
 		
-		String json = gson.toJson(updateDao);
+		String json = gson.toJson(drugformulaDao);
 		Document document = Document.parse(json);
 		
 		BasicDBObject setQuery = new BasicDBObject();
         setQuery.put("$set", document);
 		
 		BasicDBObject searchQuery = new BasicDBObject();
-		searchQuery.put("_id", updateDto.getId());
+		searchQuery.put("_id", drugformulaDto.getId());
 		
 		try {
 			collection.updateOne(searchQuery, setQuery);
@@ -87,14 +85,14 @@ public class DrugFormula {
 	@DELETE
 	@Path("/delete")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response delete(DrugFormulaDto deleteDto) {
+	public Response delete(DrugFormulaDto drugformulaDto) {
 		Connect mongo = new Connect();
 		JsonObject message = new JsonObject();
 		Gson gson = new Gson();
 		MongoCollection<Document> collection = mongo.db.getCollection("drugformula");
 		
 		try {
-			collection.deleteOne(Filters.eq("_id", deleteDto.getId())); 
+			collection.deleteOne(Filters.eq("_id", drugformulaDto.getId())); 
 			message.addProperty("message", true);
 		}catch (Exception e) {
 			message.addProperty("message", false);
@@ -106,7 +104,7 @@ public class DrugFormula {
 	@POST
 	@Path("/search")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response search(DrugFormulaDto searchDrugFormuDto) {
+	public Response search(DrugFormulaDto drugformulaDto) {
 		Connect mongo = new Connect();
 		JsonObject message = new JsonObject();
 		Gson gson = new Gson();
@@ -117,8 +115,8 @@ public class DrugFormula {
 		BasicDBObject query = new BasicDBObject();
 			
 		List<BasicDBObject> obj = new ArrayList<BasicDBObject>();
-		obj.add(new BasicDBObject("message", searchDrugFormuDto.getWarning()));
-		obj.add(new BasicDBObject("message", searchDrugFormuDto.getId()));
+		obj.add(new BasicDBObject("message", drugformulaDto.getDrugName()));
+		obj.add(new BasicDBObject("message", drugformulaDto.getHerb()));
 		query.put("$and", obj);
 				
 		DrugFormulaDto[] value = null;
