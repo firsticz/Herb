@@ -1,5 +1,8 @@
 package com.controller;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.POST;
@@ -14,11 +17,15 @@ import com.connect.Connect;
 import com.dao.Login;
 import com.dao.RegisterDao;
 import com.dao.UpdateDao;
+import com.dto.HerbDto;
 import com.dto.RegisterDto;
+import com.dto.ScoreDto;
+import com.google.common.collect.Iterables;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.mongodb.BasicDBObject;
 import com.mongodb.MongoClient;
+import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.model.Filters;
 
@@ -117,6 +124,72 @@ public class Users {
 			message.addProperty("message", true);
 		}catch (Exception e) {
 			message.addProperty("message", false);
+		}
+		
+		return Response.ok(gson.toJson(message), MediaType.APPLICATION_JSON).build();
+	}
+	
+	@POST
+	@Path("/findOne")
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Response findOne(RegisterDto registerDto) {
+		Connect mongo = new Connect();
+		JsonObject message = new JsonObject();
+		Gson gson = new Gson();
+		MongoCollection<Document> collection = mongo.db.getCollection("member");
+		ModelMapper Mapper = new ModelMapper();
+		
+		BasicDBObject searchQuery = new BasicDBObject();
+		searchQuery.put("_id", registerDto.getId());
+		
+		RegisterDto value = new RegisterDto();
+		
+		try {
+			FindIterable<Document> data = collection.find(searchQuery);
+			value = Mapper.map(data.first(), RegisterDto.class);
+			message.addProperty("message", true);
+		}catch (Exception e) {
+			message.addProperty("message", false);
+		}finally {
+			message.add("data", gson.toJsonTree(value));
+		}
+		
+		return Response.ok(gson.toJson(message), MediaType.APPLICATION_JSON).build();
+	}
+	
+	@POST
+	@Path("/search")
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Response search(RegisterDto registerDto) {
+		Connect mongo = new Connect();
+		JsonObject message = new JsonObject();
+		Gson gson = new Gson();
+		MongoCollection<Document> collection = mongo.db.getCollection("member");
+		ModelMapper Mapper = new ModelMapper();
+		
+		// find when water = 'value' and seed = 'value'
+		BasicDBObject query = new BasicDBObject();
+			
+		List<BasicDBObject> obj = new ArrayList<BasicDBObject>();
+		obj.add(new BasicDBObject("username", registerDto.getUsername()));
+		obj.add(new BasicDBObject("password", registerDto.getPassword()));
+		query.put("$and", obj);
+				
+		RegisterDto[] value = null;
+		
+		try {
+			FindIterable<Document> data = collection.find(query);
+			int size = Iterables.size(data);
+			value = new RegisterDto[size];
+			int key = 0;
+			for (Document document : data) {
+				value[key++] = Mapper.map(document, RegisterDto.class);
+			}
+			message.addProperty("message", true);
+		}catch (Exception e) {
+			message.addProperty("message", false);
+		}finally {
+			message.add("data", gson.toJsonTree(value));
 		}
 		
 		return Response.ok(gson.toJson(message), MediaType.APPLICATION_JSON).build();

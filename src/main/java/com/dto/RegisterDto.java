@@ -1,7 +1,9 @@
 package com.dto;
 
-public class RegisterDto {
+import org.bson.types.ObjectId;
 
+public class RegisterDto {
+	String id;
 	String email;
 	String firstname;
 	String lastname;
@@ -38,4 +40,11 @@ public class RegisterDto {
 	public void setPassword(String password) {
 		this.password = password;
 	}
+	public ObjectId getId() {
+		return new ObjectId(id);
+	}
+	public void setId(String id) {
+		this.id = id;
+	}
+	
 }
