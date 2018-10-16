@@ -7,7 +7,7 @@ public class DrugFormulaDao {
 	String[] suggestion;
 	String[] use;
 	String[] warning;
-	String[] sideEffect;
+	
 	public String getDrugName() {
 		return drugName;
 	}
@@ -38,11 +38,6 @@ public class DrugFormulaDao {
 	public void setWarning(String[] warning) {
 		this.warning = warning;
 	}
-	public String[] getSideEffect() {
-		return sideEffect;
-	}
-	public void setSideEffect(String[] sideEffect) {
-		this.sideEffect = sideEffect;
-	}
+	
 	
 }
