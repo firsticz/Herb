@@ -159,82 +159,83 @@ public class Score {
 		return Response.ok(gson.toJson(message), MediaType.APPLICATION_JSON).build();
 	}
 	
-	@POST
-	@Path("/search")
-	@Consumes(MediaType.APPLICATION_JSON)
-	public Response search(ScoreDto scoreDto) {
-		Connect mongo = new Connect();
-		JsonObject message = new JsonObject();
-		Gson gson = new Gson();
-		MongoCollection<Document> collection = mongo.db.getCollection("score");
-		ModelMapper Mapper = new ModelMapper();
-		
-		// find when water = 'value' and seed = 'value'
-		BasicDBObject query = new BasicDBObject();
-			
-		List<BasicDBObject> obj = new ArrayList<BasicDBObject>();
-		obj.add(new BasicDBObject("drugformula", scoreDto.getDrugformula()));
-		obj.add(new BasicDBObject("score", scoreDto.getScore()));
-		query.put("$and", obj);
-				
-		ScoreDto[] value = null;
-		
-		try {
-			FindIterable<Document> data = collection.find(query);
-			int size = Iterables.size(data);
-			value = new ScoreDto[size];
-			int key = 0;
-			for (Document document : data) {
-				value[key++] = Mapper.map(document, ScoreDto.class);
-			}
-				message.addProperty("message", true);
-			}catch (Exception e) {
-				message.addProperty("message", false);
-		}finally {
-			message.add("data", gson.toJsonTree(value));
-		}
-		
-		return Response.ok(gson.toJson(message), MediaType.APPLICATION_JSON).build();
-	}
+//	@POST
+//	@Path("/search")
+//	@Consumes(MediaType.APPLICATION_JSON)
+//	public Response search(ScoreDto scoreDto) {
+//		Connect mongo = new Connect();
+//		JsonObject message = new JsonObject();
+//		Gson gson = new Gson();
+//		MongoCollection<Document> collection = mongo.db.getCollection("score");
+//		ModelMapper Mapper = new ModelMapper();
+//		
+//		// find when water = 'value' and seed = 'value'
+//		BasicDBObject query = new BasicDBObject();
+//			
+//		List<BasicDBObject> obj = new ArrayList<BasicDBObject>();
+//		obj.add(new BasicDBObject("drugformula", scoreDto.getDrugformula()));
+//		obj.add(new BasicDBObject("score", scoreDto.getScore()));
+//		query.put("$and", obj);
+//				
+//		ScoreDto[] value = null;
+//		
+//		try {
+//			FindIterable<Document> data = collection.find(query);
+//			int size = Iterables.size(data);
+//			value = new ScoreDto[size];
+//			int key = 0;
+//			for (Document document : data) {
+//				value[key++] = Mapper.map(document, ScoreDto.class);
+//			}
+//				message.addProperty("message", true);
+//			}catch (Exception e) {
+//				message.addProperty("message", false);
+//		}finally {
+//			message.add("data", gson.toJsonTree(value));
+//		}
+//		
+//		return Response.ok(gson.toJson(message), MediaType.APPLICATION_JSON).build();
+//	}
 	
-	@POST
-	@Path("/calscore")
-	@Consumes(MediaType.APPLICATION_JSON)
-	public Response calscore(ScoreDto scoreDto) {
-		Connect mongo = new Connect();
-		JsonObject message = new JsonObject();
-		Gson gson = new Gson();
-		MongoCollection<Document> collection = mongo.db.getCollection("score");
-		ModelMapper Mapper = new ModelMapper();
-		
-		BasicDBObject searchQuery = new BasicDBObject();
-		searchQuery.put("drugformula", scoreDto.getDrugformula());
-		
-		ScoreDto value = new ScoreDto();
-		FindIterable<Document> data = collection.find(searchQuery);
-		value = Mapper.map(data.first(), ScoreDto.class);
-		value.setVote(value.getVote()+1);
-		value.setScore((value.getScore() + scoreDto.getScore())/ value.getVote());
-		
-		
-		ScoreDao scoreDao = Mapper.map(value, ScoreDao.class);
-		
-		String json = gson.toJson(scoreDao);
-		Document document = Document.parse(json);
-		
-		BasicDBObject setQuery = new BasicDBObject();
-        setQuery.put("$set", document);
-		
-		
-		
-		try {
-			collection.updateOne(searchQuery, setQuery);
-			message.addProperty("message", true);
-		}catch (Exception e) {
-			message.addProperty("message", false);
-		}
-		
-		return Response.ok(gson.toJson(message), MediaType.APPLICATION_JSON).build();
-	}
+//	@POST
+//	@Path("/calscore")
+//	@Consumes(MediaType.APPLICATION_JSON)
+//	public Response calscore(ScoreDto scoreDto) {
+//		Connect mongo = new Connect();
+//		JsonObject message = new JsonObject();
+//		Gson gson = new Gson();
+//		MongoCollection<Document> collection = mongo.db.getCollection("score");
+//		ModelMapper Mapper = new ModelMapper();
+//		
+//		BasicDBObject searchQuery = new BasicDBObject();
+//		searchQuery.put("drugformula", scoreDto.getDrugformula());
+//		
+//		ScoreDto value = new ScoreDto();
+//		FindIterable<Document> data = collection.find(searchQuery);
+//		value = Mapper.map(data.first(), ScoreDto.class);
+//		value.setVote(value.getVote()+1);
+//		value.setScore((value.getScore() + scoreDto.getScore())/ value.getVote());
+//		
+//		
+//		ScoreDao scoreDao = Mapper.map(value, ScoreDao.class);
+//		
+//		String json = gson.toJson(scoreDao);
+//		Document document = Document.parse(json);
+//		
+//		BasicDBObject setQuery = new BasicDBObject();
+//        setQuery.put("$set", document);
+//		
+//		
+//		
+//		try {
+//			collection.updateOne(searchQuery, setQuery);
+//			message.addProperty("message", true);
+//		}catch (Exception e) {
+//			message.addProperty("message", false);
+//		}
+//		
+//		return Response.ok(gson.toJson(message), MediaType.APPLICATION_JSON).build();
+//	}
 
 }
+ 

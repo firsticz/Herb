@@ -1,26 +1,19 @@
 package com.dao;
 
 public class ScoreDao {
-	String drugformula;
-	double score;
-	int vote;
-	public String getDrugformula() {
-		return drugformula;
+	String drugformulaId;
+	UserScoreDao[] userscore;
+	public String getDrugformulaId() {
+		return drugformulaId;
 	}
-	public void setDrugformula(String drugformula) {
-		this.drugformula = drugformula;
+	public void setDrugformulaId(String drugformulaId) {
+		this.drugformulaId = drugformulaId;
 	}
-	public double getScore() {
-		return score;
+	public UserScoreDao[] getUserscore() {
+		return userscore;
 	}
-	public void setScore(double score) {
-		this.score = score;
-	}
-	public int getVote() {
-		return vote;
-	}
-	public void setVote(int vote) {
-		this.vote = vote;
+	public void setUserscore(UserScoreDao[] userscore) {
+		this.userscore = userscore;
 	}
 	
 

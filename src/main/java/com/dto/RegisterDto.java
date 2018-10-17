@@ -3,6 +3,7 @@ package com.dto;
 import org.bson.types.ObjectId;
 
 public class RegisterDto {
+	String _id;
 	String id;
 	String email;
 	String firstname;
@@ -44,7 +45,13 @@ public class RegisterDto {
 		return new ObjectId(id);
 	}
 	public void setId(String id) {
-		this.id = id;
+		this.id = _id;
+	}
+	public String get_id() {
+		return _id;
+	}
+	public void set_id(String _id) {
+		this._id = _id;
 	}
 	
 }
