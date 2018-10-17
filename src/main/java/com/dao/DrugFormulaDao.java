@@ -8,7 +8,7 @@ public class DrugFormulaDao {
 	String[] suggestion;
 	String[] use;
 	String[] warning;
-	
+	String[] sideEffect;
 	public String getDrugName() {
 		return drugName;
 	}
@@ -39,7 +39,7 @@ public class DrugFormulaDao {
 	public void setWarning(String[] warning) {
 		this.warning = warning;
 	}
-<<<<<<< HEAD
+	
 	public String[] getSideEffect() {
 		return sideEffect;
 	}
@@ -52,8 +52,6 @@ public class DrugFormulaDao {
 	public void setRecipeType(String recipeType) {
 		this.recipeType = recipeType;
 	}
-=======
-	
->>>>>>> branch 'master' of https://github.com/firsticz/Herb.git
+
 	
 }
