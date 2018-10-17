@@ -6,6 +6,7 @@ public class ScoreDto {
 	String drugformula;
 	double score;
 	int vote;
+	UserScoreDto userscore;
 	public String getDrugformula() {
 		return drugformula;
 	}

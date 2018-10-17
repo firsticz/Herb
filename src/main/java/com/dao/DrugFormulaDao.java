@@ -3,6 +3,7 @@ package com.dao;
 public class DrugFormulaDao {
 	
 	String drugName;
+	String recipeType;
 	HerbDrugDao[] herb;
 	String[] suggestion;
 	String[] use;
@@ -43,6 +44,12 @@ public class DrugFormulaDao {
 	}
 	public void setSideEffect(String[] sideEffect) {
 		this.sideEffect = sideEffect;
+	}
+	public String getRecipeType() {
+		return recipeType;
+	}
+	public void setRecipeType(String recipeType) {
+		this.recipeType = recipeType;
 	}
 	
 }

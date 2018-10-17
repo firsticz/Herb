@@ -6,6 +6,7 @@ public class DrugFormulaDto {
 	
 	String id;
 	String drugName;
+	String recipeType;
 	HerbDrugDto[] herb;
 	String[] suggestion;
 	String[] use;
@@ -53,6 +54,12 @@ public class DrugFormulaDto {
 	}
 	public void setSideEffect(String[] sideEffect) {
 		this.sideEffect = sideEffect;
+	}
+	public String getRecipeType() {
+		return recipeType;
+	}
+	public void setRecipeType(String recipeType) {
+		this.recipeType = recipeType;
 	}
 	
 }
