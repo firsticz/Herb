@@ -5,7 +5,7 @@ import org.bson.types.ObjectId;
 public class SymptomDto {
 	
 	String id;
-	SymptomGroupDto idSymtomGroup;
+	String idSymtomGroup;
 	String SymtomName;
 	String[]  idDrugFormula;
 	
@@ -14,12 +14,6 @@ public class SymptomDto {
 	}
 	public void setId(String id) {
 		this.id = id;
-	}
-	public SymptomGroupDto getIdSymtomGroup() {
-		return idSymtomGroup;
-	}
-	public void setIdSymtomGroup(SymptomGroupDto idSymtomGroup) {
-		this.idSymtomGroup = idSymtomGroup;
 	}
 	public String getSymtomName() {
 		return SymtomName;
@@ -33,5 +27,12 @@ public class SymptomDto {
 	public void setIdDrugFormula(String[] idDrugFormula) {
 		this.idDrugFormula = idDrugFormula;
 	}
-
+	public String getIdSymtomGroup() {
+		return idSymtomGroup;
+	}
+	public void setIdSymtomGroup(String idSymtomGroup) {
+		this.idSymtomGroup = idSymtomGroup;
+	}
+	
+	
 }
