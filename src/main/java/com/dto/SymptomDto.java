@@ -6,26 +6,13 @@ public class SymptomDto {
 	
 	String id;
 	String idSymtomGroup;
-	String SymtomName;
-	String[]  idDrugFormula;
-	
+	String symptomName;
+	String[] idDrugFormula;
 	public ObjectId getId() {
 		return new ObjectId(id);
 	}
 	public void setId(String id) {
 		this.id = id;
-	}
-	public String getSymtomName() {
-		return SymtomName;
-	}
-	public void setSymtomName(String symtomName) {
-		SymtomName = symtomName;
-	}
-	public String[] getIdDrugFormula() {
-		return idDrugFormula;
-	}
-	public void setIdDrugFormula(String[] idDrugFormula) {
-		this.idDrugFormula = idDrugFormula;
 	}
 	public String getIdSymtomGroup() {
 		return idSymtomGroup;
@@ -33,6 +20,17 @@ public class SymptomDto {
 	public void setIdSymtomGroup(String idSymtomGroup) {
 		this.idSymtomGroup = idSymtomGroup;
 	}
-	
+	public String getSymptomName() {
+		return symptomName;
+	}
+	public void setSymptomName(String symptomName) {
+		this.symptomName = symptomName;
+	}
+	public String[] getIdDrugFormula() {
+		return idDrugFormula;
+	}
+	public void setIdDrugFormula(String[] idDrugFormula) {
+		this.idDrugFormula = idDrugFormula;
+	}
 	
 }

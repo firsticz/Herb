@@ -1,4 +1,7 @@
 package com.controller;
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.POST;
@@ -8,6 +11,7 @@ import org.bson.Document;
 import org.modelmapper.ModelMapper;
 import com.connect.Connect;
 import com.dao.SymptomDao;
+import com.dto.DrugFormulaDto;
 import com.dto.SymptomDto;
 import com.google.common.collect.Iterables;
 import com.google.gson.Gson;
@@ -144,6 +148,43 @@ public class Symptom {
 			try {
 				FindIterable<Document> data = collection.find(searchQuery);
 				value = Mapper.map(data.first(), SymptomDto.class);
+				message.addProperty("message", true);
+			}catch (Exception e) {
+				message.addProperty("message", false);
+			}finally {
+				message.add("data", gson.toJsonTree(value));
+			}
+			
+			return Response.ok(gson.toJson(message), MediaType.APPLICATION_JSON).build();
+		}
+		
+		
+		@POST
+		@Path("/search")
+		@Consumes(MediaType.APPLICATION_JSON)
+		public Response search(SymptomDto symptomDto) {
+			Connect mongo = new Connect();
+			JsonObject message = new JsonObject();
+			Gson gson = new Gson();
+			MongoCollection<Document> collection = mongo.db.getCollection("symptom");
+			ModelMapper Mapper = new ModelMapper();
+			
+			// find when water = 'value' and seed = 'value'
+			BasicDBObject query = new BasicDBObject();
+				
+			List<BasicDBObject> obj = new ArrayList<BasicDBObject>();
+			obj.add(new BasicDBObject("symtomName", symptomDto.getSymptomName()));
+					
+			SymptomDto[] value = null;
+			
+			try {
+				FindIterable<Document> data = collection.find(query);
+				int size = Iterables.size(data);
+				value = new SymptomDto[size];
+				int key = 0;
+				for (Document document : data) {
+					value[key++] = Mapper.map(document, SymptomDto.class);
+				}
 				message.addProperty("message", true);
 			}catch (Exception e) {
 				message.addProperty("message", false);

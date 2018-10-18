@@ -78,4 +78,54 @@ public class UserScore {
 		return Response.ok(gson.toJson(message), MediaType.APPLICATION_JSON).build();
 	}
 	
+	
+	@POST
+	@Path("/findagv")
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Response findagv(ScoreDto scoreDto) {
+		Connect mongo = new Connect();
+		JsonObject message = new JsonObject();
+		Gson gson = new Gson();
+		MongoCollection<Document> collection = mongo.db.getCollection("score");
+		ModelMapper Mapper = new ModelMapper();
+		
+		BasicDBObject query = new BasicDBObject();
+		List<BasicDBObject> obj = new ArrayList<BasicDBObject>();
+//		//get value for search
+//		obj.add(new BasicDBObject("drugformulaId", scoreDto.getDrugformulaId()));
+//		obj.add(new BasicDBObject("userscore.id", scoreDto.getUserscore()[0].getId()));
+//		query.put("$and", obj);
+		
+//		[
+//		{$unwind : '$userscore'},
+//		{$group:{_id:{"drugformulaId":"$drugformulaId"},totalscore:{$sum:"$userscore.score"}}}
+//
+//		]
+		BasicDBObject unwind = new BasicDBObject();
+		unwind.put("$unwind", "$userscore");
+		
+		BasicDBObject _id = new BasicDBObject();
+		_id.put("drugformulaId", "$drugformulaId");
+		
+		
+		BasicDBObject totalscore = new BasicDBObject();
+		totalscore.put("$sum", "$userscore.score");
+		
+		BasicDBObject group = new BasicDBObject();
+		group.put(_id, totalscore);
+		
+		try {
+			
+			
+			message.addProperty("message", true);
+		}catch (Exception e) {
+			message.addProperty("message", false);
+		}
+//		finally {
+//			message.add("data", gson.toJsonTree(value));
+//		}
+		
+		return Response.ok(gson.toJson(message), MediaType.APPLICATION_JSON).build();
+	}
+	
 }

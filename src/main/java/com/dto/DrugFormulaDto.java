@@ -5,6 +5,7 @@ import org.bson.types.ObjectId;
 public class DrugFormulaDto {
 	
 	String id;
+	String idDrugFormula;
 	String drugName;
 	String recipeType;
 	HerbDrugDto[] herb;
@@ -61,5 +62,12 @@ public class DrugFormulaDto {
 	public void setRecipeType(String recipeType) {
 		this.recipeType = recipeType;
 	}
+	public String getIdDrugFormula() {
+		return idDrugFormula;
+	}
+	public void setIdDrugFormula(String idDrugFormula) {
+		this.idDrugFormula = idDrugFormula;
+	}
+	
 	
 }

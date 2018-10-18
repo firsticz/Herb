@@ -3,14 +3,19 @@ package com.dao;
 public class SymptomDao {
 	
 	String idSymtomGroup;
-	String SymtomName;
+	String symptomName;
 	String[] idDrugFormula;
-	
-	public String getSymtomName() {
-		return SymtomName;
+	public String getIdSymtomGroup() {
+		return idSymtomGroup;
 	}
-	public void setSymtomName(String symtomName) {
-		SymtomName = symtomName;
+	public void setIdSymtomGroup(String idSymtomGroup) {
+		this.idSymtomGroup = idSymtomGroup;
+	}
+	public String getSymptomName() {
+		return symptomName;
+	}
+	public void setSymptomName(String symptomName) {
+		this.symptomName = symptomName;
 	}
 	public String[] getIdDrugFormula() {
 		return idDrugFormula;
@@ -18,17 +23,5 @@ public class SymptomDao {
 	public void setIdDrugFormula(String[] idDrugFormula) {
 		this.idDrugFormula = idDrugFormula;
 	}
-	public String getIdSymtomGroup() {
-		return idSymtomGroup;
-	}
-	public void setIdSymtomGroup(String idSymtomGroup) {
-		this.idSymtomGroup = idSymtomGroup;
-	}
-	
-	
-
-	
-	
-	
 	
 }

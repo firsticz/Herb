@@ -1,10 +1,12 @@
 package com.dto;
 
+import org.bson.types.ObjectId;
+
 public class UserScoreDto {
 	String id;
 	double score;
-	public String getId() {
-		return id;
+	public ObjectId getId() {
+		return new ObjectId(id);
 	}
 	public void setId(String id) {
 		this.id = id;
