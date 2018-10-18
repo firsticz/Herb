@@ -62,8 +62,6 @@ public class SymptomSearch {
 					}
 				}
 			}
-			System.out.println(value3);
-
 			message.addProperty("message", true);
 
 		}catch (Exception e) {
