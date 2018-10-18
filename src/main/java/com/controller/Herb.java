@@ -196,4 +196,37 @@ public class Herb {
 		
 		return Response.ok(gson.toJson(message), MediaType.APPLICATION_JSON).build();
 	}
+	
+	@POST
+	@Path("/searchproperties")
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Response searchproperties(HerbDto herbDto) {
+		Connect mongo = new Connect();
+		JsonObject message = new JsonObject();
+		Gson gson = new Gson();
+		MongoCollection<Document> collection = mongo.db.getCollection("herb");
+		ModelMapper Mapper = new ModelMapper();
+		
+		BasicDBObject searchQuery = new BasicDBObject();
+		searchQuery.put("herbname", herbDto.getHerbname());
+		
+		BasicDBObject project = new BasicDBObject();
+		project.put("_id", 0);
+		project.put("warning", 0);
+		project.put("herbname",0);
+		
+		HerbDto value = new HerbDto();
+		
+		try {
+			FindIterable<Document> data = collection.find(searchQuery).projection(project);
+			value = Mapper.map(data.first(), HerbDto.class);
+			message.addProperty("message", true);
+		}catch (Exception e) {
+			message.addProperty("message", false);
+		}finally {
+			message.add("data", gson.toJsonTree(value));
+		}
+		
+		return Response.ok(gson.toJson(message), MediaType.APPLICATION_JSON).build();
+	}
 }
