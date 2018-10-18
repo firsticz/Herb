@@ -211,10 +211,7 @@ public class Herb {
 		searchQuery.put("herbname", herbDto.getHerbname());
 		
 		BasicDBObject project = new BasicDBObject();
-		project.put("_id", 0);
-		project.put("warning", 0);
-		project.put("herbname",0);
-		
+		project.put("_id", 0); 
 		HerbDto value = new HerbDto();
 		
 		try {
