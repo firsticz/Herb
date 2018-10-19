@@ -179,7 +179,7 @@ public class DrugFormula {
 		ModelMapper Mapper = new ModelMapper();
 		
 		BasicDBObject searchQuery = new BasicDBObject();
-		searchQuery.put("_id", drugformulaDto.getId());
+		searchQuery.put("drugName", drugformulaDto.getDrugName());
 		
 		DrugFormulaDto value = new DrugFormulaDto();
 		

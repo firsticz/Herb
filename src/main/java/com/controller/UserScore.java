@@ -14,9 +14,13 @@ import org.bson.conversions.Bson;
 import org.modelmapper.ModelMapper;
 
 import com.connect.Connect;
+import com.dto.DrugFormulaDto;
 import com.dto.ScoreDto;
+import com.dto.ScoreOutput;
+import com.dto.SymptomDto;
 import com.google.common.collect.Iterables;
 import com.google.gson.Gson;
+import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBObject;
@@ -82,48 +86,52 @@ public class UserScore {
 	@POST
 	@Path("/findagv")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response findagv(ScoreDto scoreDto) {
+	public Response findagv() {
 		Connect mongo = new Connect();
 		JsonObject message = new JsonObject();
 		Gson gson = new Gson();
 		MongoCollection<Document> collection = mongo.db.getCollection("score");
 		ModelMapper Mapper = new ModelMapper();
 		
-		BasicDBObject query = new BasicDBObject();
-		List<BasicDBObject> obj = new ArrayList<BasicDBObject>();
-//		//get value for search
-//		obj.add(new BasicDBObject("drugformulaId", scoreDto.getDrugformulaId()));
-//		obj.add(new BasicDBObject("userscore.id", scoreDto.getUserscore()[0].getId()));
-//		query.put("$and", obj);
+		BasicDBObject searchQuery = new BasicDBObject();
 		
 //		[
 //		{$unwind : '$userscore'},
 //		{$group:{_id:{"drugformulaId":"$drugformulaId"},totalscore:{$sum:"$userscore.score"}}}
 //
 //		]
-		BasicDBObject unwind = new BasicDBObject();
-		unwind.put("$unwind", "$userscore");
-		
-		BasicDBObject _id = new BasicDBObject();
-		_id.put("drugformulaId", "$drugformulaId");
-		
-		
-		BasicDBObject totalscore = new BasicDBObject();
-		totalscore.put("$sum", "$userscore.score");
-		
-		BasicDBObject group = new BasicDBObject();
-		group.put(_id, totalscore);
-		
+		ScoreOutput average = new ScoreOutput();
+		ScoreDto[] value = null;
 		try {
+
+			FindIterable<Document> data = collection.find();
+			int size = Iterables.size(data);
+			value = new ScoreDto[size];
+			int key = 0;
+			for (Document document : data) {
+				value[key++] = Mapper.map(document, ScoreDto.class);
+			}
+			double[] sum = new double[size];
+			double[] avg = new double[size];
 			
+			
+			
+			for(int i=0;i < size; i++) {
+				for(int j=0;j< value[i].getUserscore().length;j++) {
+					sum[i] += value[i].getUserscore()[j].getScore();
+				}
+				avg[i] = sum[i]/value[i].getUserscore().length;
+			}
+			average.setAvg(avg);
 			
 			message.addProperty("message", true);
+			message.add("data2", gson.toJsonTree(average));
 		}catch (Exception e) {
 			message.addProperty("message", false);
 		}
-//		finally {
-//			message.add("data", gson.toJsonTree(value));
-//		}
+		finally {
+		message.add("data", gson.toJsonTree(value));
+	}
 		
 		return Response.ok(gson.toJson(message), MediaType.APPLICATION_JSON).build();
 	}

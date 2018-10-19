@@ -1,5 +1,6 @@
 package com.dao;
  public class HerbDao {
+	String idherb;
 	String herbname;
 	String[] properties;
 	String[] warning;
@@ -21,6 +22,13 @@ package com.dao;
 	public void setWarning(String[] warning) {
 		this.warning = warning;
 	}
+	public String getIdherb() {
+		return idherb;
+	}
+	public void setIdherb(String idherb) {
+		this.idherb = idherb;
+	}
+	
 	
 	
 }

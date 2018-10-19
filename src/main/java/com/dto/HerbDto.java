@@ -5,6 +5,7 @@ import org.bson.types.ObjectId;
 public class HerbDto {
 	String id;
 	String _id;
+	String idherb;
 	String herbname;
 	String[] properties;
 	String[] warning;
@@ -37,6 +38,12 @@ public class HerbDto {
 	}
 	public void set_id(String _id) {
 		this._id = _id;
+	}
+	public String getIdherb() {
+		return idherb;
+	}
+	public void setIdherb(String idherb) {
+		this.idherb = idherb;
 	}
 	
 	
