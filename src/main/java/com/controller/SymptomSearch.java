@@ -18,6 +18,7 @@ import com.google.common.collect.Iterables;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.mongodb.BasicDBObject;
+import com.mongodb.DBObject;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 
@@ -36,15 +37,22 @@ public class SymptomSearch {
 		ModelMapper Mapper = new ModelMapper();
 
 		BasicDBObject searchQuery = new BasicDBObject();
-		searchQuery.put("symptomName", symptomDto.getSymptomName());
+		searchQuery.put("symtomName", symptomDto.getSymtomName());
 		
-		SymptomDto value = new SymptomDto();
+		
+		SymptomDto[] value = null;
+		SymptomDto values = new SymptomDto();
 		DrugFormulaDto[] value2 = null;
 		DrugFormulaDto[] value3 = null;
 		try {
-			FindIterable<Document> data = collection2.find(searchQuery);
-			value = Mapper.map(data.first(), SymptomDto.class);
-			int size = value.getIdDrugFormula().length;
+			FindIterable<Document> data = collection2.find();
+			int size = Iterables.size(data);
+			value = new SymptomDto[size];
+			int k=0;
+			for(Document document : data) {
+				value[k++]=Mapper.map(document, SymptomDto.class);
+			}
+			
 			
 			FindIterable<Document> data2 = collection.find();
 			int size2 = Iterables.size(data2);
@@ -55,13 +63,13 @@ public class SymptomSearch {
 				value2[key++] = Mapper.map(document, DrugFormulaDto.class);
 			}
 			
-			for(int i=0;i< size;i++) {
-				for(int j=0;j< size2; j++) {
-					if(value.getIdDrugFormula()[i].equals(value2[j].getIdDrugFormula()) ) {
-						value3[i]=Mapper.map(value2[j], DrugFormulaDto.class);
-					}
-				}
-			}
+//			for(int i=0;i< size;i++) {
+//				for(int j=0;j< size2; j++) {
+//					if(values.getIdDrugFormula()[i].equals(value2[j].getIdDrugFormula()) ) {
+//						value3[i]=Mapper.map(value2[j], DrugFormulaDto.class);
+//					}
+//				}
+//			}
 			message.addProperty("message", true);
 
 		}catch (Exception e) {

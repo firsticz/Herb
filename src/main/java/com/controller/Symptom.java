@@ -117,6 +117,7 @@ public class Symptom {
 				int size = Iterables.size(data);
 				value = new SymptomDto[size];
 				int key = 0;
+				
 				for (Document document : data) {
 					value[key++] = Mapper.map(document, SymptomDto.class);
 				}
@@ -171,9 +172,13 @@ public class Symptom {
 			
 			// find when water = 'value' and seed = 'value'
 			BasicDBObject query = new BasicDBObject();
+//			query.put("SymtomName", symptomDto.getSymtomName());
 				
 			List<BasicDBObject> obj = new ArrayList<BasicDBObject>();
-			obj.add(new BasicDBObject("symtomName", symptomDto.getSymptomName()));
+			obj.add(new BasicDBObject("SymtomName", symptomDto.getSymtomName()));
+			obj.add(new BasicDBObject("SymtomName", symptomDto.getSymtomName()));
+			
+			query.put("$and", obj);
 					
 			SymptomDto[] value = null;
 			

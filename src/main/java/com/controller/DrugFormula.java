@@ -16,6 +16,7 @@ import org.modelmapper.ModelMapper;
 import com.connect.Connect;
 import com.dao.DrugFormulaDao;
 import com.dto.DrugFormulaDto;
+import com.dto.HerbDto;
 import com.dto.ScoreDto;
 import com.google.common.collect.Iterables;
 import com.google.gson.Gson;
@@ -176,21 +177,33 @@ public class DrugFormula {
 		JsonObject message = new JsonObject();
 		Gson gson = new Gson();
 		MongoCollection<Document> collection = mongo.db.getCollection("drugformula");
+		MongoCollection<Document> collection2 = mongo.db.getCollection("herb");
 		ModelMapper Mapper = new ModelMapper();
 		
 		BasicDBObject searchQuery = new BasicDBObject();
 		searchQuery.put("drugName", drugformulaDto.getDrugName());
 		
 		DrugFormulaDto value = new DrugFormulaDto();
+		HerbDto[] value2 = null;
 		
 		try {
 			FindIterable<Document> data = collection.find(searchQuery);
 			value = Mapper.map(data.first(), DrugFormulaDto.class);
+			
+			FindIterable<Document> data2 = collection2.find();
+			int size2 = Iterables.size(data2);
+			value2 = new HerbDto[size2];
+			int key = 0;
+			for (Document document : data2) {
+				value2[key++] = Mapper.map(document, HerbDto.class);
+			}
+			
 			message.addProperty("message", true);
 		}catch (Exception e) {
 			message.addProperty("message", false);
 		}finally {
 			message.add("data", gson.toJsonTree(value));
+			message.add("data2", gson.toJsonTree(value2));
 		}
 		
 		return Response.ok(gson.toJson(message), MediaType.APPLICATION_JSON).build();
